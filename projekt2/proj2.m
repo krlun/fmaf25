@@ -8,24 +8,24 @@ data_array = zeros(n_patients, n_samples); % array for dividing up the data, row
 time = data(1:10, 2);
 
 for i = 1:n_patients
-    data_array(i, 1:end) = data(((i-1)*10+1):(i*10), 3); % Radvis plasmakoncentration för patient 101..110
+    data_array(i, 1:end) = data(((i-1)*10+1):(i*10), 3); % Radvis plasmakoncentration f??r patient 101..110
 end
 
-data_mean = mean(data_array'); % Medelvärde taget över varje tidpunkt
-data_std = std(data_array'); % Standardavvikelse taget över varje tidpunkt
-data_var = data_std.^2; % Varians taget över varje tidpunkt
+data_mean = mean(data_array'); % Medelv??rde taget ??ver varje tidpunkt
+data_std = std(data_array'); % Standardavvikelse taget ??ver varje tidpunkt
+data_var = data_std.^2; % Varians taget ??ver varje tidpunkt
 
 subplot(2,1,1)
-plot(time, data_array, 'xb')
+plot(time, data_array, 'b')
 xlabel('Tid (h)')
 ylabel('Plasmakoncentration')
-title('Uppmätt data')
+title('Uppm??tt data')
 
 subplot(2,1,2)
 plot(time, data_mean, 'b') 
 hold on;
-plot(time, data_mean + 1.96*data_std, 'r--');
-plot(time, data_mean - 1.96*data_std, 'r--');
+plot(time, data_mean + norminv(0.975)*data_std, 'r--');
+plot(time, data_mean - norminv(0.975)*data_std, 'r--');
 xlabel('Tid (h)')
 ylabel('Plasmakoncentration')
-title('Medelvärde och 95% CI')
+title('Medelv??rde och 95% CI')
