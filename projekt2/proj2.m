@@ -36,12 +36,47 @@ title('Medelvarde och 95% CI')
 
 % constants: F, k_a, A, lambda, B, mu
 %constants = rand(1, 6); % initial gissning av konstanter
-constants = [1.0 1.1 1.2 1.3 1.4 1.5];
+%constants = [1.0 1.1 1.2 1.3 1.4 1.5];
+%constants = [1.6289 0.5811 2.0543 0.4799 1.6500 0.0466];
+constants = [2.1110 0.3971 4.6434 0.3105 0.6070 0.0278];
 %options = optimset('MaxFunEvals', 500);
 constants = fminsearch('Qfunc', constants, [], time, data_mean);
 y = Qfunc2(constants, time);
 figure
 plot(time, data_mean, 'x-', time, y, 'o-')
+legend('data', 'passning')
+xlabel('tid')
+ylabel('C(t)')
+
+
+nor = 50;
+
+constants = [1.0 1.1 1.2 1.3 1.4 1.5];
+for i = 1:nor
+    c = zeros(10, 6);
+    for j = 1:n_patients
+        c(j, :) = fminsearch('Qfunc', constants, [], time, data_array(j, :));
+    end
+    constants = sum(c)/n_patients;
+end
+
+%% Experimentering med A' = F*k_a*A/(k_a-lambda), B' = F*k_a*B/(k_a-mu)
+% A', B', k_a, lambda, mu
+nor = 100;
+
+constants = [0.5 0.6 0.7 0.8 0.9];
+for i = 1:nor
+    c = zeros(10, 5);
+    for j = 1:n_patients
+        c(j, :) = fminsearch('Qfunc3', constants, [], time, data_array(j, :));
+    end
+    constants = sum(c)/n_patients;
+end
+
+
+y = Qfunc4(c(10, :), time);
+figure
+plot(time, data_array(10, :), 'x-', time, y, 'o-')
 legend('data', 'passning')
 xlabel('tid')
 ylabel('C(t)')
