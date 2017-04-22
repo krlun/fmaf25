@@ -80,3 +80,51 @@ plot(time, data_array(10, :), 'x-', time, y, 'o-')
 legend('data', 'passning')
 xlabel('tid')
 ylabel('C(t)')
+
+%% PARAMETERSKATTNING 
+
+cstd = std(c);              % Kolumnvis standardavvikelse. 
+cmean = mean(c);            % Kolumnvist medelvärde
+
+% Normalitetstest för A:
+statistic = (c(:,1) - cmean(1)) / cstd(1)
+
+jb = jbtest(c(:,1))         % = 0 --> kan inte förkasta normalfördelning
+lillie = lillietest(c(:,1)) % = 0 --> kan inte förkasta normalfördelning
+ks = kstest(statistic)      % Testa om normalfördelad med medelvärde cmean och standardavvikelse cstd.
+                            % = 0 --> kan inte förkasta normalfördelning
+
+normplot(c(:,1))            % Ser OK ut, förutom de två sista mätpunkterna
+
+% -> Vi antar att parametern A' är normalfördelad bland patienterna
+
+%% KONFIDENSINTERVALL
+
+Astd = [1 0 0 0 0] .* cstd;
+
+mean_response = Qfunc4(cmean, time);
+upper_response = Qfunc4(cmean + norminv(0.975) * Astd, time);
+lower_response = Qfunc4(cmean - norminv(0.975) * Astd, time);
+
+figure;
+plot(time, mean_response, 'b')
+hold on
+plot(time, upper_response, 'r--')
+plot(time, lower_response, 'r--')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
