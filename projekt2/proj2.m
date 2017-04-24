@@ -111,20 +111,3 @@ plot(time, mean_response, 'b')
 hold on
 plot(time, upper_response, 'r--')
 plot(time, lower_response, 'r--')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
