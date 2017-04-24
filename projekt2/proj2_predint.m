@@ -141,6 +141,4 @@ hold on
 plot(time, lower_bound, 'r--')
 plot(time, mean_response)
 title(['Prediktionsintervall ' num2str(p*100) '%'])
-=======
 plot(time, lower_response, 'r--')
->>>>>>> 034951d336aef22d3168114195639c32b93eac27
