@@ -110,7 +110,6 @@ figure;
 plot(time, mean_response, 'b')
 hold on
 plot(time, upper_response, 'r--')
-<<<<<<< HEAD
 plot(time, lower_response, 'r--')
 
 %% PREDIKTIONSINTERVALL
