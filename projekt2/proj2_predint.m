@@ -113,10 +113,12 @@ plot(time, upper_response, 'r--')
 plot(time, lower_response, 'r--')
 
 %% PREDIKTIONSINTERVALL
+time = linspace(0, 96, 1000);
+
 Astd = cstd(1);  % Standard deviation A
 Bstd = cstd(2);  % Standard deviation B
 
-ka = cmean(3)
+ka = cmean(3);
 lambda = cmean(4);
 mu = cmean(5);
 
@@ -130,7 +132,7 @@ fmean = Qfunc4(cmean, time);
 fvar = Afactor(time).^2 * Astd^2 + Bfactor(time).^2 * Bstd^2 + 2 * Afactor(time) .* Bfactor(time) * covAB;
 fstd = sqrt(fvar);
 
-p = 0.9;
+p = 0.8;
 upper_bound = fmean + tinv(1 - (1-p)/2, n_patients) * fstd * sqrt(1 + 1/n_patients);
 lower_bound = fmean - tinv(1 - (1-p)/2, n_patients) * fstd * sqrt(1 + 1/n_patients);
 
@@ -140,3 +142,16 @@ hold on
 plot(time, lower_bound, 'r--')
 plot(time, mean_response)
 title(['Prediktionsintervall ' num2str(p*100) '%'])
+
+%% Dosing
+%dosing = 0:5:24*4;
+dosing = [0 0 0 12 24 36 48 60 72 84 96];
+supLower = superposition(lower_bound, time, dosing);
+supmean = superposition(fmean, time, dosing);
+supUpper = superposition(upper_bound, time, dosing);
+
+figure;
+plot(time, supLower)
+hold on
+plot(time, supUpper)
+plot(time, supmean)     
